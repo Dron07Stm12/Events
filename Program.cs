@@ -26,60 +26,43 @@ namespace Events
             {
                 SomeEvent();
             }
-            //else
-            //{
-            //    Console.WriteLine("Не произошло событие");
-            //}
-
+            
         }
     }
 
     public class X 
     {
+
+        int id;
+
+        public X(int x)
+        {
+           id = x; 
+        }
         public void Hendler_x() 
         {
-            Console.WriteLine("Событие обьекта класса Х");
+            Console.WriteLine("Событие обьекта класса Х " + id);
         }
     
     }
 
-    public class Y
-    {
-        public void Hendler_y()
-        {
-            Console.WriteLine("Событие обьекта класса Y");
-        }
-
-    }
-
-
+  
     public class Program
     {
-        // Обработчик события, 
-        static void Hendler() 
-        {
-            Console.WriteLine("Произошло событие");
-        }
-
+     
         static void Main(string[] args)
         {
             MyEvent my = new MyEvent();
-            X x = new X();  
-            Y y = new Y();
+            X x1 = new X(1);
+            X x2 = new X(2);
+            X x3 = new X(3);
 
-
-            // Добавить обработчики в список событий. 
-            //В данном примере создаются два дополнительных класса, X и Y, в которых также 
-            //определяются обработчики событий, совместимые с делегатом MyEvent Handler.
-            //Поэтому эти обработчики могут быть также включены в цепочку событий. 
-              my.SomeEvent += Hendler;
-              my.SomeEvent += x.Hendler_x;
-              my.SomeEvent += y.Hendler_y;
-              //Запускаем событие
-              my.Method_SomeEvent();
-              my.SomeEvent -= x.Hendler_x;
-              my.Method_SomeEvent();
-
+            // добавить экземпляры класса Х методов(обработчиков событий) в список событий
+            my.SomeEvent += x1.Hendler_x;
+            my.SomeEvent += x2.Hendler_x;
+            my.SomeEvent += x3.Hendler_x;
+            //запускаем событие
+            my.Method_SomeEvent();  
 
         }
     }
