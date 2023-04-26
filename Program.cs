@@ -32,16 +32,10 @@ namespace Events
 
     public class X 
     {
-
-        int id;
-
-        public X(int x)
+     
+        public static void Hendler_x() 
         {
-           id = x; 
-        }
-        public void Hendler_x() 
-        {
-            Console.WriteLine("Событие обьекта класса Х " + id);
+            Console.WriteLine("Событие обьекта класса Х ");
         }
     
     }
@@ -53,14 +47,10 @@ namespace Events
         static void Main(string[] args)
         {
             MyEvent my = new MyEvent();
-            X x1 = new X(1);
-            X x2 = new X(2);
-            X x3 = new X(3);
 
-            // добавить экземпляры класса Х методов(обработчиков событий) в список событий
-            my.SomeEvent += x1.Hendler_x;
-            my.SomeEvent += x2.Hendler_x;
-            my.SomeEvent += x3.Hendler_x;
+            //регистрируем статический обработчик в список событии
+            my.SomeEvent += X.Hendler_x;
+            
             //запускаем событие
             my.Method_SomeEvent();  
 
