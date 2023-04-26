@@ -26,10 +26,10 @@ namespace Events
             {
                 SomeEvent();
             }
-            else
-            {
-                Console.WriteLine("Не произошло событие");
-            }
+            //else
+            //{
+            //    Console.WriteLine("Не произошло событие");
+            //}
 
         }
     }
