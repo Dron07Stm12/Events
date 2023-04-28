@@ -10,83 +10,56 @@ using System.Threading.Tasks;
 
 namespace Events
 {
-    //1 - создается класс MyEventArgs, производный от класса EventArgs. 
-    public class MyEventArgs : EventArgs
-    {
-        public int EventNum;
-
-
-    }
-    //объявляется делегат MyEventHandler, принимающий два параметра, требующиеся 
-    //для среды.NET Framework, и  под событие
-    // первый параметр содержит  
-    // ссылку на объект, формирующий событие, а второй параметр — ссылку на объект класса
-    //EventArgs или производного от него класса.
-    public delegate void MyEventHandler(object source, MyEventArgs e);
-
-
+      
     public class MyEvent 
     {
-        public  static int count;
-        //событие
-        public event MyEventHandler SomeEvent;
-       
-        //создадим метод для запуска события
+        // событие привязано к делегату - public delegate void EventHandler(object sender, EventArgs e);
+        public event EventHandler SomeEvent;
+        public int i = 2;
+
+        //метод для запуска события
         public void Method_SomeEvent() 
         {
-            MyEventArgs args = new MyEventArgs();
+            MyEvent my = new MyEvent(); 
             if (SomeEvent != null)
             {
-                args.EventNum = count++;
-                SomeEvent(this,args);
-            }
-        
+                SomeEvent(my.i,EventArgs.Empty);
+            }      
         }
-    
     }
 
-    //Обработчики событий Handler (),  
-    //определяемые в классах X и Y, принимают параметры тех же самых типов.
-
-    public class X 
-    {
-        public void Handler(object source,MyEventArgs args)
-        {
-            Console.WriteLine("Событие " + args.EventNum + " получено обьектом класса Х ");
-            Console.WriteLine("Источник(ссылка на обьект формирующие событие): " + source);
-        
-        } 
     
-    }
-
-    public class Y 
-    {
-
-        public void Handler(object source, MyEventArgs eventArgs) 
-        {
-            Console.WriteLine("Cобытие " + eventArgs.EventNum + " получено обьектом класса Y ");
-            Console.WriteLine("Источник(ссылка на обьект формирующие событие): " + source);
-        }
-    
-    }
-
 
 
     public class Program
     {
-
+        public static void Handler(object source, EventArgs args) 
+        {
+            Console.WriteLine("Произошло событие, " + "источник "+ source.GetType() +" равный "+ source);
+            Console.WriteLine();
+        
+        }
        
         static void Main(string[] args)
         {
-            MyEvent myEvent = new MyEvent();
-            X x = new X();
-            Y y = new Y();
-            myEvent.SomeEvent += x.Handler;
-            myEvent.SomeEvent += y.Handler;
-           
-            myEvent.Method_SomeEvent();
-            myEvent.Method_SomeEvent();
 
+            MyEvent my = new MyEvent();
+            my.SomeEvent += Program.Handler;
+           
+            my.SomeEvent += delegate (object source, EventArgs args1)
+            {
+                Console.WriteLine("Источник события(ссылка на обьект формирующее событие): " + source);
+                Console.WriteLine("Ссылка на обьект клаасса EventArgs" + args1.GetType());
+                Console.WriteLine();
+            };
+
+            my.SomeEvent += (s, ar) => {
+                Console.WriteLine("Источник события(ссылка на обьект формирующее событие): " + s);
+                Console.WriteLine("Ссылка на обьект клаасса EventArgs" + ar.GetType());
+
+            };
+
+            my.Method_SomeEvent();
         }
     }
 }
